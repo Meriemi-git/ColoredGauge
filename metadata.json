@@ -1,0 +1,23 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "meriemi@protonmail.com",
+                "Name": "Rémi Plantade"
+            }
+        ],
+        "Category": "Utilities",
+        "Description": "Colored Gauge for sensor monitoring",
+        "EnabledByDefault": true,
+        "Icon": "org.kde.resourcesMonitor",
+        "Id": "org.meriemi.coloredgauge",
+        "License": "",
+        "Name": "Colored Gauge",
+        "ServiceTypes": [
+            "KSysguard/SensorFace"
+        ],
+        "Version": "0.1",
+        "Website": "https://plasma.kde.org/"
+    },
+    "X-KDE-ParentApp": "org.kde.plasmashell"
+}
