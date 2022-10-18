@@ -42,7 +42,7 @@ ChartControls.PieChartControl {
     topPadding: 0
     bottomPadding: 0
 
-     readonly property real rangeFrom: root.controller.faceConfiguration.rangeFrom *
+    readonly property real rangeFrom: root.controller.faceConfiguration.rangeFrom *
                                       root.controller.faceConfiguration.rangeFromMultiplier
 
     readonly property real rangeTo: root.controller.faceConfiguration.rangeTo *
@@ -124,14 +124,6 @@ ChartControls.PieChartControl {
             resultBlue = coldColor.b + (percent * (hotColor.b - coldColor.b))
             newColor = Qt.rgba(resultRed,resultGreen,resultBlue,1)
             chart.color = newColor
-            // console.log("===============================")
-            // console.log("sensor.value: " + sensor.value)
-            // console.log("rangeFrom: " + chart.rangeFrom)
-            // console.log("rangeTo: " + chart.rangeTo)
-            // console.log("percent: " + percent)
-            // console.log("coldColor: " + coldColor)
-            // console.log("hotColor: " + hotColor)
-            // console.log("newColor: " + newColor)
         }
     }
 }
