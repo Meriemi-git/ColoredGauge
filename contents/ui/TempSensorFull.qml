@@ -11,9 +11,10 @@ import org.kde.quickcharts 1.0 as Charts
 import org.kde.quickcharts.controls 1.0 as ChartControls
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-RowLayout {
-    id: tempSensor
-    spacing: 18
+ColumnLayout {
+    id: tempSensorFull
+    Layout.fillHeight: true
+    Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
 
     Sensors.Sensor {
         id: sensor
@@ -21,19 +22,24 @@ RowLayout {
         updateRateLimit: 1000
     }
 
+
     QQC2.Label {
         id: label
         visible: true
-        text: sensor.value.toFixed(2) + "°C"
-    }
-
+        text: sensor.value.toFixed(2)
+        Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
+        z:1
+        anchors {
+            bottom: parent.bottom
+             bottomMargin: 30
+        }   
+    } 
     Item {
         id: iconTemp
         visible: true
-        Layout.fillWidth: true
         Layout.fillHeight: true
-        Layout.rightMargin: 18
-
+        Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
+        
         readonly property string no_temp_icon: "../images/no_temp.svg"
         readonly property string temp_cold_icon: "../images/temp_cold.svg"
         readonly property string temp_low_icon: "../images/temp_low.svg"
@@ -43,6 +49,8 @@ RowLayout {
 
         PlasmaCore.Svg {
             id: iconSvg
+            Layout.fillHeight: true
+            Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
             imagePath: Qt.resolvedUrl(iconTemp.no_temp_icon)
             property double ratio : 1.84
         }
@@ -50,22 +58,23 @@ RowLayout {
         PlasmaCore.SvgItem {
             id: svgItem
             visible: false
+            anchors.centerIn: parent
             width: height / iconSvg.ratio
             height:  parent.height
-
-            anchors {
-                top: parent.top
-                horizontalCenter: parent.horizontalCenter
-            }
             svg: iconSvg
+
         }
 
         ColorOverlay{
             id: overlay
             anchors.fill: svgItem
+            Layout.fillHeight: true
+            anchors.centerIn: parent
+            Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
             source:svgItem
             color: Qt.rgba(0,0,0,0)
             antialiasing: true
+            visible : chart.sensor.value > 0.0
         }
 
         ChartControls.PieChartControl {
@@ -75,7 +84,6 @@ RowLayout {
             property alias sensors: sensorsModel.sensors
             property alias sensorsModel: sensorsModel
             property alias sensorValue: sensor.value
-
             readonly property real rangeFrom: root.controller.faceConfiguration.rangeFrom *
                                         root.controller.faceConfiguration.rangeFromMultiplier
 
@@ -91,11 +99,11 @@ RowLayout {
                 indexColumns: true
             } 
             chart.onDataChanged:{
-                if(sensorValue!= null && sensorValue != previousSensorValue){
+                if(sensorValue != null && sensorValue != previousSensorValue){
                     var percent = 0
-                    if(sensorValue  > chart.rangeFrom && sensorValue  < chart.rangeTo){
-                        percent = (sensorValue  - chart.rangeFrom) / (chart.rangeTo - chart.rangeFrom)
-                    }else if(sensorValue  >= chart.rangeTo){
+                    if(sensorValue > chart.rangeFrom && sensorValue < chart.rangeTo){
+                        percent = (sensorValue- chart.rangeFrom) / (chart.rangeTo - chart.rangeFrom)
+                    }else if(sensorValue >= chart.rangeTo){
                         // Temp overshoot max
                         percent = 1
                         iconSvg.imagePath=Qt.resolvedUrl(iconTemp.temp_hot_icon)
@@ -125,11 +133,10 @@ RowLayout {
                     var newColor = Qt.rgba(resultRed,resultGreen,resultBlue,1)
                     // Apply new RGB color on top of svg
                     overlay.color = newColor
-                    label.color = newColor
                     // Save actual temp to avoid useless refresh
-                    previousSensorValue = sensorValue 
+                    previousSensorValue = sensorValue
                     // console.log("===============================")
-                    // console.log("sensorValue : " + sensorValue )
+                    // console.log("sensor.value: " + sensorValue)
                     // console.log("rangeFrom: " + chart.rangeFrom)
                     // console.log("rangeTo: " + chart.rangeTo)
                     // console.log("percent: " + percent)

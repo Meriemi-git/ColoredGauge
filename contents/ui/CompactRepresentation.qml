@@ -17,13 +17,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Faces.SensorFace {
     id: root
     contentItem: ColumnLayout  {
-        
         TempSensor {
             visible: true
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.rightMargin: 18
         }
     }
-
 }
