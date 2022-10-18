@@ -3,7 +3,6 @@
 */
 
 import QtQuick 2.9
-import QtQuick.Controls 2.2 as QQC2
 import QtQuick.Layouts 1.1
 
 import org.kde.kirigami 2.8 as Kirigami
@@ -17,21 +16,9 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Faces.SensorFace {
     id: root
-    contentItem: RowLayout  {
-        spacing: 18
-
-        Sensors.Sensor {
-            id: sensor
-            sensorId: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
-            updateRateLimit: 1000
-        }
-
-        QQC2.Label {
-            id: label
-            visible: true
-            text: sensor.value.toFixed(2) + "°C"
-        }
-        IconTemp{
+    contentItem: ColumnLayout  {
+        
+        TempSensor {
             visible: true
             Layout.fillWidth: true
             Layout.fillHeight: true
