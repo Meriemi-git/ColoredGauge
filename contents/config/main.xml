@@ -6,6 +6,12 @@
   <kcfgfile name=""/>
 
     <group name="General">
+     <entry name="fromAngle" type="Int">
+            <default>-180</default>
+        </entry>
+        <entry name="toAngle" type="Int">
+            <default>180</default>
+        </entry>
         <entry name="coldColor" type="color">
             <default>#00ff00</default>
         </entry>

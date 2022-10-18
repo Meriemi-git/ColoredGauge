@@ -49,7 +49,9 @@ ChartControls.PieChartControl {
                                     root.controller.faceConfiguration.rangeToMultiplier
 
     chart.smoothEnds: root.controller.faceConfiguration.smoothEnds
-
+    chart.fromAngle: root.controller.faceConfiguration.fromAngle
+    chart.toAngle: root.controller.faceConfiguration.toAngle
+    
     range {
         from: chart.rangeFrom
         to: chart.rangeTo
@@ -122,14 +124,14 @@ ChartControls.PieChartControl {
             resultBlue = coldColor.b + (percent * (hotColor.b - coldColor.b))
             newColor = Qt.rgba(resultRed,resultGreen,resultBlue,1)
             chart.color = newColor
-            console.log("===============================")
-            console.log("sensor.value: " + sensor.value)
-            console.log("rangeFrom: " + chart.rangeFrom)
-            console.log("rangeTo: " + chart.rangeTo)
-            console.log("percent: " + percent)
-            console.log("coldColor: " + coldColor)
-            console.log("hotColor: " + hotColor)
-            console.log("newColor: " + newColor)
+            // console.log("===============================")
+            // console.log("sensor.value: " + sensor.value)
+            // console.log("rangeFrom: " + chart.rangeFrom)
+            // console.log("rangeTo: " + chart.rangeTo)
+            // console.log("percent: " + percent)
+            // console.log("coldColor: " + coldColor)
+            // console.log("hotColor: " + hotColor)
+            // console.log("newColor: " + newColor)
         }
     }
 }

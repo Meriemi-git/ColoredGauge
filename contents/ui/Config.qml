@@ -18,7 +18,8 @@ Kirigami.FormLayout {
 
     property alias cfg_showLegend: showSensorsLegendCheckbox.checked
     property alias cfg_smoothEnds: smoothEndsCheckbox.checked
-
+    property alias cfg_fromAngle: fromAngleSpin.value
+    property alias cfg_toAngle: toAngleSpin.value
     property alias cfg_rangeAuto: rangeAutoCheckbox.checked
     property alias cfg_rangeFrom: rangeFromSpin.value
     property alias cfg_rangeFromMultiplier: rangeFromSpin.multiplier
@@ -97,6 +98,33 @@ Kirigami.FormLayout {
             modality: Qt.WindowModal
         }
     }
+    QQC2.SpinBox {
+        id: fromAngleSpin
+        Kirigami.FormData.label: i18n("Start from Angle")
+        from: -180
+        to: 360
+        editable: true
+        textFromValue: function(value, locale) {
+            return i18nc("angle degrees", "%1°", value);
+        }
+        valueFromText: function(text, locale) {
+            return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+        }
+    }
+    QQC2.SpinBox {
+        id: toAngleSpin
+        Kirigami.FormData.label: i18n("Total Pie Angle")
+        from: 0
+        to: 360
+        editable: true
+        textFromValue: function(value, locale) {
+            return i18nc("angle", "%1°", value);
+        }
+        valueFromText: function(text, locale) {
+            return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+        }
+    }
+
     QQC2.CheckBox {
         id: showSensorsLegendCheckbox
         text: i18n("Show Sensors Legend")

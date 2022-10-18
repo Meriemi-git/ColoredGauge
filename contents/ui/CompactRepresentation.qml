@@ -1,9 +1,4 @@
 /*
-    SPDX-FileCopyrightText: 2019 Marco Martin <mart@kde.org>
-    SPDX-FileCopyrightText: 2019 David Edmundson <davidedmundson@kde.org>
-    SPDX-FileCopyrightText: 2019 Arjen Hiemstra <ahiemstra@heimr.nl>
-    SPDX-FileCopyrightText: 2019 Kai Uwe Broulik <kde@broulik.de>
-
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
@@ -22,24 +17,13 @@ import org.kde.quickcharts.controls 1.0 as ChartControls
 Faces.SensorFace {
     id: root
     contentItem: ColumnLayout {
-        Sensors.SensorDataModel {
-            id: sensorModel
-            sensors: controller.highPrioritySensorIds
-        }
-        PieChart {
-            Layout.maximumHeight: Math.max(root.width, Layout.minimumHeight)
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.alignment: Qt.AlignCenter
-            updateRateLimit: root.controller.updateRateLimit
-        }
         QQC2.Label {
             id: label
-            visible: root.formFactor == Faces.SensorFace.Planar && root.controller.showTitle && text.length > 0
+            visible: true
             Layout.alignment: Qt.AlignTop
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
-            text: root.controller.title
+            text: "test"
         }
     }
 }
