@@ -137,6 +137,23 @@ Kirigami.FormLayout {
         id: rangeAutoCheckbox
         text: i18n("Automatic Data Range")
     }
+    Row {
+        QQC2.CheckBox {
+            id: showValueLabel
+            text: i18n("Show text value")
+            nextCheckState: function() {
+                if (checkState === Qt.Checked)
+                    return Qt.Unchecked
+                else
+                    return Qt.Checked
+            }
+
+        }
+        QQC2.CheckBox {
+            id: showIcon
+            text: i18n("Show icon")
+        }
+    }
     Faces.SensorRangeSpinBox {
         id: rangeFromSpin
         Kirigami.FormData.label: i18n("Min :")

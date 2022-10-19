@@ -14,6 +14,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 ColumnLayout {
     id: tempSensorFull
     Layout.fillHeight: true
+    Layout.fillWidth: true
     Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
 
     ColorUtils.Gradien {
@@ -30,6 +31,7 @@ ColumnLayout {
         id: iconTemp
         visible: true
         Layout.fillHeight: true
+        Layout.fillWidth: true
         Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
 
         readonly property string no_temp_icon: "../images/no_temp.svg"
@@ -48,18 +50,17 @@ ColumnLayout {
         PlasmaCore.SvgItem {
             id: svgItem
             visible: false
-            anchors.centerIn: parent
-            width: height / iconSvg.ratio
-            height:  parent.height
+            anchors.horizontalCenter: parent.horizontalCenter 
+            width: parent.width < width ? parent.width : height / iconSvg.ratio
+            height:  parent.width < width ? width * ratio : iconTemp.height
             svg: iconSvg
-
         }
 
         ColorOverlay{
             id: overlay
             anchors.fill: svgItem
             Layout.fillHeight: true
-            anchors.centerIn: parent
+            Layout.fillWidth: true
             Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
             source:svgItem
             color: Qt.rgba(0,0,0,0)
@@ -67,17 +68,17 @@ ColumnLayout {
             visible : sensor.value > 0.0
         }
 
-
         QQC2.Label {
             id: label
             visible: true
+            horizontalAlignment: Text.AlignHCenter
             text: sensor.value != null ? sensor.value.toFixed(2)+ "°C" : "--.--°C"
-            Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
             z:1
-            height : 0
+            anchors.horizontalCenter: parent.horizontalCenter            
             anchors {
-                bottom: svgItem.bottom
-                bottomMargin: svgItem.height * 0.2
+                bottom: iconTemp.bottom
+                bottomMargin: iconTemp.height * 0.23
+
             }   
             font.bold: true
         } 
@@ -137,6 +138,7 @@ ColumnLayout {
                 }
             }  
         }
+        
     }
 
 

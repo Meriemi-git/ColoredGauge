@@ -17,6 +17,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Faces.SensorFace {
     id: root
     contentItem: ColumnLayout  {
+        Layout.maximumWidth:40
+        Layout.maximumHeight:40
         Kirigami.Heading {
             id: heading
             Layout.fillWidth: true
