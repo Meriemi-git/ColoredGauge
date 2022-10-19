@@ -132,14 +132,6 @@ RowLayout {
                     label.color = newColor
                     // Save actual temp to avoid useless refresh
                     previousSensorValue = sensorValue 
-                    // console.log("===============================")
-                    // console.log("sensorValue : " + sensorValue )
-                    // console.log("rangeFrom: " + chart.rangeFrom)
-                    // console.log("rangeTo: " + chart.rangeTo)
-                    // console.log("percent: " + percent)
-                    // console.log("coldColor: " + coldColor)
-                    // console.log("hotColor: " + hotColor)
-                    // console.log("newColor: " + newColor)
                 }
             }
         }

@@ -2,8 +2,8 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-import QtQuick 2.9
-import QtQuick.Layouts 1.1
+import QtQuick 2.9 
+import QtQuick.Layouts 1.1 
 
 import org.kde.kirigami 2.8 as Kirigami
 
@@ -30,5 +30,5 @@ Faces.SensorFace {
             Layout.fillHeight: true
             Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
         }
-    }
+    }   
 }
