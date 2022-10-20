@@ -27,13 +27,13 @@ RowLayout {
 
     QQC2.Label {
         id: label
-        visible: true
+        visible: root.controller.faceConfiguration.showText
         text: sensor.value.toFixed(2) + "°C"
     }
 
     Item {
         id: iconTemp
-        visible: true
+        visible: root.controller.faceConfiguration.showIcon
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.rightMargin: 18
