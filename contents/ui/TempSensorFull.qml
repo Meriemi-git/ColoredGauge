@@ -14,9 +14,14 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 ColumnLayout {
     id: tempSensorFull
-    Layout.fillHeight: true
+    Layout.fillHeight: true 
     Layout.fillWidth: true
     Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
+
+    readonly property bool showText : root.controller.faceConfiguration.showText
+    readonly property bool showIcon : root.controller.faceConfiguration.showIcon
+
+    property color actualColor : Qt.rgba(0,0,0,0)
 
     ColorUtils.Gradien {
         id : gradien
@@ -30,7 +35,7 @@ ColumnLayout {
 
     Item {
         id: iconTemp
-        visible: true
+        visible: showIcon
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
@@ -52,8 +57,8 @@ ColumnLayout {
             id: svgItem
             visible: false
             anchors.horizontalCenter: parent.horizontalCenter 
-            width: parent.width < width ? parent.width : height / iconSvg.ratio
-            height:  parent.width < width ? width * ratio : iconTemp.height
+            width: height / iconSvg.ratio
+            height: iconTemp.height
             svg: iconSvg
         }
 
@@ -64,15 +69,14 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
             source:svgItem
-            color: Qt.rgba(0,0,0,0)
+            color: tempSensorFull.actualColor
             antialiasing: true
             visible : sensor.value > 0.0
         }
 
-    
         QQC2.Label {
-            id: label
-            visible: true
+            id: iconLabel
+            visible: showText
             color: "black"
             z:1
             horizontalAlignment: Text.AlignHCenter
@@ -89,8 +93,8 @@ ColumnLayout {
             layer.effect: Glow {
                 radius: 4
                 samples: 17
-                color: overlay.color
-                source: label
+                color: tempSensorFull.actualColor 
+                source: iconLabel
                 spread: 0.5
             }
         } 
@@ -144,7 +148,7 @@ ColumnLayout {
                     var coldColor = root.controller.faceConfiguration.coldColor
                     var hotColor = root.controller.faceConfiguration.hotColor
                     // Calculate new RGB color
-                    overlay.color = gradien.generateGradient(coldColor,hotColor,mix)
+                    tempSensorFull.actualColor = gradien.generateGradient(coldColor,hotColor,mix)
                     // Save actual temp to avoid useless refresh
                     previousSensorValue = sensorValue
                 }
@@ -153,5 +157,26 @@ ColumnLayout {
         
     }
 
-
+    QQC2.Label {
+        id: label
+        visible: showText && !showIcon
+        color: "black"
+        z:1
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        text: sensor.value != null ? Math.round(sensor.value) + "°C" : "--°C"
+        font.pointSize: Kirigami.Theme.defaultFont.pointSize * 2
+        antialiasing : true        
+        font.bold: true
+        layer.enabled: true
+        layer.effect: Glow {
+            radius: 4
+            samples: 17
+            color: tempSensorFull.actualColor 
+            source: label
+            spread: 0.5
+        }
+    } 
 }
