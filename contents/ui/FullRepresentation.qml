@@ -17,7 +17,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Faces.SensorFace {
     id: root
     readonly property bool showSensorTitle : controller.faceConfiguration.showSensorTitle
-    readonly property bool  colorizedSensorTitle : controller.faceConfiguration.colorizedSensorTitle
+    readonly property bool colorizedSensorTitle : controller.faceConfiguration.colorizedSensorTitle
     readonly property real rangeFrom: root.controller.faceConfiguration.rangeFrom *
                                         root.controller.faceConfiguration.rangeFromMultiplier
     readonly property real rangeTo: root.controller.faceConfiguration.rangeTo *
@@ -25,15 +25,13 @@ Faces.SensorFace {
     readonly property color coldColor: root.controller.faceConfiguration.coldColor  
     readonly property color hotColor: root.controller.faceConfiguration.hotColor 
 
-    readonly property string no_temp_icon: "../images/no_temp.svg"
-    readonly property string temp_cold_icon: "../images/temp_cold.svg"
-    readonly property string temp_low_icon: "../images/temp_low.svg"
-    readonly property string temp_half_icon: "../images/temp_half.svg"
-    readonly property string temp_high_icon: "../images/temp_high.svg"
-    readonly property string temp_hot_icon: "../images/temp_hot.svg"
+    
 
     property double previousSensorValue
     property color actualColor : Qt.rgba(0,0,0,1)
+    property double sensorValue : 0.0
+    property double mix : 0.0
+
     contentItem: ColumnLayout  {
 
         Kirigami.Heading {
@@ -51,8 +49,8 @@ Faces.SensorFace {
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
             actualColor : root.actualColor
-            sensorValue : 0.0
-            sensorIcon : Qt.resolvedUrl(root.no_temp_icon)
+            sensorValue : root.sensorValue
+            mix : root.mix
         }
 
         ColorUtils.Gradien {
@@ -84,29 +82,17 @@ Faces.SensorFace {
                     console.log('sensorValue',sensorValue)
                     if(sensorValue > root.rangeFrom && sensorValue < root.rangeTo){
                         var mix = (sensorValue- root.rangeFrom) / (root.rangeTo - root.rangeFrom)
-                    }else if(sensorValue >= chart.rangeTo){
+                    }else if(sensorValue >= root.rangeTo){
                         // Temp overshoot max
                         mix = 1
-                        tempSensorFull.sensorIcon=Qt.resolvedUrl(root.temp_hot_icon)
-                    }else{
+                    }else if(sensorValue <= root.rangeFrom){
                         // Temp is lower than min
                         mix = 0
-                        tempSensorFull.sensorIcon=Qt.resolvedUrl(root.temp_cold_icon)
                     }  
-                    // Manage intermediate temp icon
-                    if(mix > 0 && mix <= 0.33){
-                        tempSensorFull.sensorIcon=Qt.resolvedUrl(root.temp_low_icon)
-                    }
-                    if(mix > 0.33 && mix <= 0.66){
-                        tempSensorFull.sensorIcon=Qt.resolvedUrl(root.temp_half_icon)
-                    }
-                    if(mix > 0.66 && mix < 1){
-                        tempSensorFull.sensorIcon=Qt.resolvedUrl(root.temp_high_icon)
-                    }
                     var newColor = gradien.generateGradient(root.coldColor,root.hotColor,mix)
                     root.actualColor = newColor
-                    tempSensorFull.sensorValue = sensorValue
-                    heading.color = newColor
+                    root.sensorValue = sensorValue
+                    root.mix = mix
                     previousSensorValue = sensorValue
                 }
             }           

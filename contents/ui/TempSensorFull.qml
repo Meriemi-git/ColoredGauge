@@ -1,3 +1,6 @@
+/*
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
 import QtQuick 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.2 as QQC2
@@ -13,7 +16,7 @@ import org.kde.quickcharts.controls 1.0 as ChartControls
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 ColumnLayout {
-    id: tempSensorFull
+    id: bigTemp
     Layout.fillHeight: true 
     Layout.fillWidth: true
     Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
@@ -21,9 +24,18 @@ ColumnLayout {
     readonly property bool showText : root.controller.faceConfiguration.showText
     readonly property bool showIcon : root.controller.faceConfiguration.showIcon
     readonly property bool roundedValue : root.controller.faceConfiguration.roundedValue
+
+    readonly property string no_temp_icon: "../images/no_temp.svg"
+    readonly property string temp_cold_icon: "../images/temp_cold.svg"
+    readonly property string temp_low_icon: "../images/temp_low.svg"
+    readonly property string temp_half_icon: "../images/temp_half.svg"
+    readonly property string temp_high_icon: "../images/temp_high.svg"
+    readonly property string temp_hot_icon: "../images/temp_hot.svg"
+
     property color actualColor 
     property double sensorValue
-    property string sensorIcon 
+    property double mix 
+
     Item {
         id: iconTemp
         visible: showIcon
@@ -33,7 +45,26 @@ ColumnLayout {
 
         PlasmaCore.Svg {
             id: iconSvg
-            imagePath: sensorIcon
+            imagePath: {
+                if(mix == 1.0){
+                    // Temp overshoot max
+                    return Qt.resolvedUrl(bigTemp.temp_hot_icon)
+                }
+                if (mix == 0.){
+                    // Temp is lower than min
+                    return Qt.resolvedUrl(bigTemp.temp_cold_icon)
+                }  
+                // Manage intermediate temp icon
+                if(mix > 0 && mix <= 0.33){
+                    return Qt.resolvedUrl(bigTemp.temp_low_icon)
+                }
+                if(mix > 0.33 && mix <= 0.66){
+                    return Qt.resolvedUrl(bigTemp.temp_half_icon)
+                }
+                if(mix > 0.66 && mix < 1){
+                    return Qt.resolvedUrl(bigTemp.temp_high_icon)
+                }
+            }
             property double ratio : 1.84
         }
 
@@ -53,7 +84,7 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.alignment : Qt.AlignHCenter | Qt.AlignTop
             source:svgItem
-            color: tempSensorFull.actualColor
+            color: bigTemp.actualColor
             antialiasing: true
             visible : sensorValue > 0.0
         }
@@ -64,7 +95,7 @@ ColumnLayout {
             color: "black"
             z:1
             horizontalAlignment: Text.AlignHCenter
-            text: tempSensorFull.roundedValue ? Math.round(sensorValue) + "°C" : sensorValue.toFixed(2)+ "°C"
+            text: bigTemp.roundedValue ? Math.round(sensorValue) + "°C" : sensorValue.toFixed(2)+ "°C"
             font.pointSize: Kirigami.Theme.defaultFont.pointSize * 2
             anchors.horizontalCenter: parent.horizontalCenter  
             antialiasing : true        
@@ -77,7 +108,7 @@ ColumnLayout {
             layer.effect: Glow {
                 radius: 4
                 samples: 17
-                color: tempSensorFull.actualColor 
+                color: bigTemp.actualColor 
                 source: iconLabel
                 spread: 0.5
             }
@@ -93,7 +124,7 @@ ColumnLayout {
         verticalAlignment: Text.AlignVCenter
         Layout.fillHeight: true
         Layout.fillWidth: true
-        text: tempSensorFull.roundedValue ? Math.round(sensorValue) + "°C" : sensorValue.toFixed(2)+ "°C"
+        text: bigTemp.roundedValue ? Math.round(sensorValue) + "°C" : sensorValue.toFixed(2)+ "°C"
         font.pointSize: Kirigami.Theme.defaultFont.pointSize * 2
         antialiasing : true        
         font.bold: true
@@ -101,7 +132,7 @@ ColumnLayout {
         layer.effect: Glow {
             radius: 4
             samples: 17
-            color: tempSensorFull.actualColor 
+            color: bigTemp.actualColor 
             source: label
             spread: 0.5
         }
