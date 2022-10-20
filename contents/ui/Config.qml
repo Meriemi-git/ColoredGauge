@@ -39,7 +39,7 @@ Kirigami.FormLayout {
     property alias cfg_showSensorTitle: showSensorTitle.checked
     property alias cfg_colorizedSensorTitle: colorizedSensorTitle.checked
     property alias cfg_roundedValue: roundedValue.checked
-
+    property alias cfg_forceCompact: forceCompact.checked
     Kirigami.Separator{
         Kirigami.FormData.isSection: true
     }
@@ -122,7 +122,7 @@ Kirigami.FormLayout {
                        if(!showIcon.checked){
                             showIcon.checked = true
                         }
-                        return Qt.UnChecked
+                        return Qt.Unchecked
                     }
                     else{
                          return Qt.Checked
@@ -139,7 +139,7 @@ Kirigami.FormLayout {
                        if(!showText.checked){
                             showText.checked = true
                         }
-                        return Qt.UnChecked
+                        return Qt.Unchecked
                     }
                     else{
                          return Qt.Checked
@@ -159,6 +159,10 @@ Kirigami.FormLayout {
         QQC2.CheckBox {
             id: colorizedSensorTitle
             text: i18n("Colorized sensor title")
+        }
+         QQC2.CheckBox {
+            id: forceCompact
+            text: i18n("Force compact mode")
         }
         QQC2.CheckBox {
             id: roundedValue
