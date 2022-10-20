@@ -17,7 +17,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Faces.SensorFace {
     id: root
     contentItem: ColumnLayout  {
-        TempSensor {
+        LittleTemp {
             visible: true
         }
     }

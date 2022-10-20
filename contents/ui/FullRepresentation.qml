@@ -44,7 +44,7 @@ Faces.SensorFace {
             level: 2
             color : root.actualColor
         }
-        TempSensorFull {
+        BigTemp {
             id : tempSensorFull
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
@@ -52,7 +52,6 @@ Faces.SensorFace {
             sensorValue : root.sensorValue
             mix : root.mix
         }
-
         ColorUtils.Gradien {
             id : gradien
         }
