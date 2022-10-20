@@ -69,21 +69,30 @@ ColumnLayout {
             visible : sensor.value > 0.0
         }
 
+    
         QQC2.Label {
             id: label
             visible: true
             color: "black"
-            horizontalAlignment: Text.AlignHCenter
-            text: sensor.value != null ? sensor.value.toFixed(2)+ "°C" : "--.--°C"
             z:1
+            horizontalAlignment: Text.AlignHCenter
+            text: sensor.value != null ? Math.round(sensor.value) + "°C" : "--°C"
+            font.pointSize: Kirigami.Theme.defaultFont.pointSize * 2
             anchors.horizontalCenter: parent.horizontalCenter  
             antialiasing : true        
             anchors {
                 bottom: iconTemp.bottom
-                bottomMargin: iconTemp.height * 0.23
+                bottomMargin: iconTemp.height * 0.15
             }
-            fontSizeMode: Text.Fit 
             font.bold: true
+            layer.enabled: true
+            layer.effect: Glow {
+                radius: 4
+                samples: 17
+                color: overlay.color
+                source: label
+                spread: 0.5
+            }
         } 
 
         ChartControls.PieChartControl {
