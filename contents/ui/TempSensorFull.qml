@@ -6,6 +6,7 @@ import QtGraphicalEffects 1.12
 
 import org.kde.ksysguard.sensors 1.0 as Sensors
 import org.kde.ksysguard.faces 1.0 as Faces
+import org.kde.kirigami 2.11 as Kirigami
 
 import org.kde.quickcharts 1.0 as Charts
 import org.kde.quickcharts.controls 1.0 as ChartControls
@@ -71,15 +72,17 @@ ColumnLayout {
         QQC2.Label {
             id: label
             visible: true
+            color: "black"
             horizontalAlignment: Text.AlignHCenter
             text: sensor.value != null ? sensor.value.toFixed(2)+ "°C" : "--.--°C"
             z:1
-            anchors.horizontalCenter: parent.horizontalCenter            
+            anchors.horizontalCenter: parent.horizontalCenter  
+            antialiasing : true        
             anchors {
                 bottom: iconTemp.bottom
                 bottomMargin: iconTemp.height * 0.23
-
-            }   
+            }
+            fontSizeMode: Text.Fit 
             font.bold: true
         } 
 

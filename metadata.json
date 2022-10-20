@@ -9,10 +9,10 @@
         "Category": "Utilities",
         "Description": "Colored Gauge for sensor monitoring",
         "EnabledByDefault": true,
-        "Icon": "org.kde.resourcesMonitor",
+        "Icon": "adjustrgb",
         "Id": "org.meriemi.coloredgauge",
-        "License": "",
-        "Name": "Colored Gauge",
+        "License": "LGPLv2+",
+        "Name": "Colorfull Sensor",
         "ServiceTypes": [
             "KSysguard/SensorFace"
         ],

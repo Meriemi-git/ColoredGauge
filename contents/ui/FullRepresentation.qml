@@ -26,7 +26,7 @@ Faces.SensorFace {
             elide: Text.ElideRight
             text: root.controller.title
             visible: text.length > 0
-            level: 3
+            level: 2
         }
         TempSensorFull {
             Layout.fillHeight: true
