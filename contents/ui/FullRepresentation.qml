@@ -16,16 +16,15 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Faces.SensorFace {
     id: root
+    readonly property bool showSensorTitle : root.controller.faceConfiguration.showSensorTitle
     contentItem: ColumnLayout  {
-        Layout.maximumWidth:40
-        Layout.maximumHeight:40
         Kirigami.Heading {
             id: heading
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
             text: root.controller.title
-            visible: text.length > 0
+            visible: showSensorTitle && text.length > 0 
             level: 2
         }
         TempSensorFull {
