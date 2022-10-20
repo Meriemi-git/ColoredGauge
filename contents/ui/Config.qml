@@ -6,7 +6,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.2 as QQC2
-
+import QtGraphicalEffects 1.12
 import org.kde.kirigami 2.8 as Kirigami
 
 import org.kde.ksysguard.sensors 1.0 as Sensors
@@ -21,7 +21,7 @@ Kirigami.FormLayout {
     property alias cfg_showLegend: showSensorsLegendCheckbox.checked
     property alias cfg_smoothEnds: smoothEndsCheckbox.checked
     
-    property alias cfg_fromAngle: fromAngleSpin.value
+    // property alias cfg_fromAngle: fromAngleSpin.value
     property alias cfg_toAngle: toAngleSpin.value
 
     property alias cfg_rangeAuto: rangeAutoCheckbox.checked
@@ -36,11 +36,14 @@ Kirigami.FormLayout {
 
     property alias cfg_showText: showText.checked
     property alias cfg_showIcon: showIcon.checked
+    property alias cfg_showSensorTitle: showSensorTitle.checked
+    property alias cfg_colorizedSensorTitle: colorizedSensorTitle.checked
+    property alias cfg_roundedValue: roundedValue.checked
 
     Kirigami.Separator{
         Kirigami.FormData.isSection: true
-        Kirigami.FormData.label: i18n("General")
     }
+
     ColumnLayout{
         spacing: 5
         Row {
@@ -110,6 +113,7 @@ Kirigami.FormLayout {
         }
 
         Row {
+
             QQC2.CheckBox {
                 id: showText
                 text: i18n("Show text")
@@ -126,6 +130,7 @@ Kirigami.FormLayout {
                         
                 }
             }
+
             QQC2.CheckBox {
                 id: showIcon
                 text: i18n("Show icon")
@@ -143,10 +148,21 @@ Kirigami.FormLayout {
                 }            
             }
         }
-
+        QQC2.CheckBox {
+            id: showSensorTitle
+            text: i18n("Show Sensors title")
+        }
         QQC2.CheckBox {
             id: showSensorsLegendCheckbox
             text: i18n("Show Sensors Legend")
+        }
+        QQC2.CheckBox {
+            id: colorizedSensorTitle
+            text: i18n("Colorized sensor title")
+        }
+        QQC2.CheckBox {
+            id: roundedValue
+            text: i18n("Rounded value")
         }
         QQC2.CheckBox {
             id: rangeAutoCheckbox
@@ -171,40 +187,73 @@ Kirigami.FormLayout {
 
     Kirigami.Separator{
         Kirigami.FormData.isSection: true
-        Kirigami.FormData.label: i18n("Activity sensor")
     }
 
     ColumnLayout{
-        QQC2.SpinBox {
-            id: fromAngleSpin
-            Kirigami.FormData.label: i18n("Start from Angle")
-            from: -180
-            to: 360
-            editable: true
-            textFromValue: function(value, locale) {
-                return i18nc("angle degrees", "%1°", value);
+        spacing : 5
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter    
+
+        QQC2.Label{
+            text : i18n("Activity sensor")
+            horizontalAlignment : Text.AlignHCenter
+            Layout.fillWidth: true
+            
+        }
+
+        GridLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter    
+
+            QQC2.Label {
+                color: Kirigami.Theme.textColor
+                text: i18n("Start from Angle")  
             }
-            valueFromText: function(text, locale) {
-                return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+
+            QQC2.SpinBox {
+                id: fromAngleSpin
+                from: -180
+                to: 360
+                editable: true
+                textFromValue: function(value, locale) {
+                    return i18nc("angle degrees", "%1°", value);
+                }
+                valueFromText: function(text, locale) {
+                    return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+                }
             }
         }
-        QQC2.SpinBox {
-            id: toAngleSpin
-            Kirigami.FormData.label: i18n("Total Pie Angle")
-            from: 0
-            to: 360
-            editable: true
-            textFromValue: function(value, locale) {
-                return i18nc("angle", "%1°", value);
+        
+        GridLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter    
+            QQC2.Label {
+                id: test
+                color: Kirigami.Theme.textColor
+                text: i18n("Total Pie Angle")               
             }
-            valueFromText: function(text, locale) {
-                return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+            QQC2.SpinBox {
+                id: toAngleSpin
+                from: 0
+                to: 360
+                editable: true
+                textFromValue: function(value, locale) {
+                    return i18nc("angle", "%1°", value);
+                }
+                valueFromText: function(text, locale) {
+                    return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+                }
             }
         }
 
         QQC2.CheckBox {
             id: smoothEndsCheckbox
             text: i18n("Rounded Lines")
+            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
     }
 }
