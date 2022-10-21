@@ -18,11 +18,20 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Representation {
     id: root
     contentItem: ColumnLayout  {
-        
         LittleTemp {
+            visible : !root.levelMode
             actualColor : root.actualColor
             sensorValue : root.sensorValue
             mix : root.mix
+        }
+        PieChart {
+            visible : root.levelMode
+            Layout.maximumHeight: Math.max(root.width, Layout.minimumHeight)
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignCenter
+            updateRateLimit: root.controller.updateRateLimit
+            actualColor: root.actualColor
         }
     }
 }

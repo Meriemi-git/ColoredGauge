@@ -6,7 +6,7 @@
   <kcfgfile name=""/>
 
     <group name="General">
-     <entry name="fromAngle" type="Int">
+        <entry name="fromAngle" type="Int">
             <default>-180</default>
         </entry>
         <entry name="toAngle" type="Int">
@@ -37,6 +37,9 @@
             <default>true</default>
         </entry>
         <entry name="showSensorTitle" type="Bool">
+            <default>true</default>
+        </entry>
+        <entry name="levelMode" type="Bool">
             <default>true</default>
         </entry>
         <entry name="forceCompact" type="Bool">

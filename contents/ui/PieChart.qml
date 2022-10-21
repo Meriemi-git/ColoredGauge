@@ -26,7 +26,7 @@ ChartControls.PieChartControl {
     property alias sensorsModel: sensorsModel
 
     property int updateRateLimit
-
+    property color actualColor
     Layout.minimumHeight: root.formFactor == Faces.SensorFace.Vertical ? width : Kirigami.Units.gridUnit
 
     leftPadding: 0
@@ -72,8 +72,7 @@ ChartControls.PieChartControl {
         model: valueSources[0].model;
         indexColumns: true
     }
-    chart.colorSource: root.colorSource
-
+    // chart.colorSource: root.colorSource
     Sensors.Sensor {
         id: sensor
         sensorId: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
@@ -89,5 +88,8 @@ ChartControls.PieChartControl {
         contentMargin: chart.chart.thickness
         updateRateLimit: chart.updateRateLimit
     }
+     chart.onDataChanged:{
+        chart.color = actualColor
+     }
 }
 

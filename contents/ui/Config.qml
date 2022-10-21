@@ -40,224 +40,239 @@ Kirigami.FormLayout {
     property alias cfg_colorizedSensorTitle: colorizedSensorTitle.checked
     property alias cfg_roundedValue: roundedValue.checked
     property alias cfg_forceCompact: forceCompact.checked
-    Kirigami.Separator{
-        Kirigami.FormData.isSection: true
-    }
+    property alias cfg_levelMode: levelMode.checked
+    Row {
+        spacing: 10
 
-    ColumnLayout{
-        spacing: 5
-        Row {
-            spacing: 15
-            QQC2.Label {
-                color: Kirigami.Theme.textColor
-                text: i18n("Cold color")
-                Layout.alignment: Qt.AlignHCenter
+        Column{
+            spacing: 5
+            Kirigami.Heading{
+                text: i18n("General")
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter 
             }
-
-            Rectangle{
-                id: coldColor
-                color: cfg_coldColor
-                width: 20
-                height: 20
-                visible: true
-                MouseArea {
-                    onClicked: coldColorDialog.open()
+            Row {
+                spacing: 15
+                QQC2.Label {
+                    color: Kirigami.Theme.textColor
+                    text: i18n("Cold color")
+                    Layout.alignment: Qt.AlignHCenter
                 }
-                Layout.alignment: Qt.AlignHCenter   
-            }
-            ColorDialog {
-                id: coldColorDialog
-                title: i18n("Please choose a color")
-                color: cfg_coldColor
-                onAccepted: {
-                    cfg_coldColor = coldColorDialog.color
-                    Qt.quit()
+
+                Rectangle{
+                    id: coldColor
+                    color: cfg_coldColor
+                    width: 20
+                    height: 20
+                    visible: true
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: coldColorDialog.open()
+                    }
+                    Layout.alignment: Qt.AlignHCenter   
                 }
-                onRejected: {
-                    Qt.quit()
+                ColorDialog {
+                    id: coldColorDialog
+                    title: i18n("Please choose a color")
+                    color: cfg_coldColor
+                    onAccepted: {
+                        cfg_coldColor = coldColorDialog.color
+                        Qt.quit()
+                    }
+                    onRejected: {
+                        Qt.quit()
+                    }
+                    visible: false
+                    modality: Qt.WindowModal
                 }
-                visible: false
-                modality: Qt.WindowModal
-            }
 
-            QQC2.Label {
-                color: Kirigami.Theme.textColor
-                text: i18n("Hot color")
-            }
-
-            Rectangle{
-                id: hotColor
-                color: cfg_hotColor
-                width: 20
-                height: 20
-                visible: true
-                MouseArea {
-                    onClicked: hotColorDialog.open()
-                }   
-            }
-
-            ColorDialog {
-                id: hotColorDialog
-                title: i18n("Please choose a color")
-                color: cfg_hotColor
-                onAccepted: {
-                    cfg_hotColor = hotColorDialog.color
-                    Qt.quit()
+                QQC2.Label {
+                    color: Kirigami.Theme.textColor
+                    text: i18n("Hot color")
                 }
-                onRejected: {
-                    Qt.quit()
+
+                Rectangle{
+                    id: hotColor
+                    color: cfg_hotColor
+                    width: 20
+                    height: 20
+                    visible: true
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: hotColorDialog.open()
+                    }   
                 }
-                visible: false
-                modality: Qt.WindowModal
+
+                ColorDialog {
+                    id: hotColorDialog
+                    title: i18n("Please choose a color")
+                    color: cfg_hotColor
+                    onAccepted: {
+                        cfg_hotColor = hotColorDialog.color
+                        Qt.quit()
+                    }
+                    onRejected: {
+                        Qt.quit()
+                    }
+                    visible: false
+                    modality: Qt.WindowModal
+                }
             }
-        }
 
-        Row {
-
-            QQC2.CheckBox {
-                id: showText
-                text: i18n("Show text")
-                nextCheckState: function() {
-                    if (checkState === Qt.Checked){
-                       if(!showIcon.checked){
-                            showIcon.checked = true
+            Row {
+                QQC2.CheckBox {
+                    id: showText
+                    text: i18n("Show text")
+                    nextCheckState: function() {
+                        if (checkState === Qt.Checked){
+                        if(!showIcon.checked){
+                                showIcon.checked = true
+                            }
+                            return Qt.Unchecked
                         }
-                        return Qt.Unchecked
+                        else{
+                            return Qt.Checked
+                        }
+                            
                     }
-                    else{
-                         return Qt.Checked
-                    }
-                        
+                }
+
+                QQC2.CheckBox {
+                    id: showIcon
+                    text: i18n("Show icon")
+                    nextCheckState: function() {
+                        if (checkState === Qt.Checked){
+                            if(!showText.checked){
+                                showText.checked = true
+                            }
+                            return Qt.Unchecked
+                        }
+                        else{
+                            return Qt.Checked
+                        }   
+                    }            
                 }
             }
-
             QQC2.CheckBox {
-                id: showIcon
-                text: i18n("Show icon")
-                nextCheckState: function() {
-                    if (checkState === Qt.Checked){
-                       if(!showText.checked){
-                            showText.checked = true
-                        }
-                        return Qt.Unchecked
-                    }
-                    else{
-                         return Qt.Checked
-                    }
-                        
-                }            
+                id: showSensorTitle
+                text: i18n("Show title")
             }
-        }
-        QQC2.CheckBox {
-            id: showSensorTitle
-            text: i18n("Show Sensors title")
-        }
-        QQC2.CheckBox {
-            id: showSensorsLegendCheckbox
-            text: i18n("Show Sensors Legend")
-        }
-        QQC2.CheckBox {
-            id: colorizedSensorTitle
-            text: i18n("Colorized sensor title")
-        }
-         QQC2.CheckBox {
-            id: forceCompact
-            text: i18n("Force compact mode")
-        }
-        QQC2.CheckBox {
-            id: roundedValue
-            text: i18n("Rounded value")
-        }
-        QQC2.CheckBox {
-            id: rangeAutoCheckbox
-            text: i18n("Automatic Data Range")
-        }
-        
-        Faces.SensorRangeSpinBox {
-            id: rangeFromSpin
-            Kirigami.FormData.label: i18n("Min :")
-            Layout.preferredWidth: Kirigami.Units.gridUnit * 10
-            enabled: !rangeAutoCheckbox.checked
-            sensors: controller.highPrioritySensorIds
-        }
-        Faces.SensorRangeSpinBox {
-            id: rangeToSpin
-            Kirigami.FormData.label: i18n("Max :")
-            Layout.preferredWidth: Kirigami.Units.gridUnit * 10
-            enabled: !rangeAutoCheckbox.checked
-            sensors: controller.highPrioritySensorIds
-        }
-    }
-
-    Kirigami.Separator{
-        Kirigami.FormData.isSection: true
-    }
-
-    ColumnLayout{
-        spacing : 5
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter    
-
-        QQC2.Label{
-            text : i18n("Activity sensor")
-            horizontalAlignment : Text.AlignHCenter
-            Layout.fillWidth: true
+            QQC2.CheckBox {
+                id: colorizedSensorTitle
+                text: i18n("Colorized title")
+            }
+            QQC2.CheckBox {
+                id: showSensorsLegendCheckbox
+                text: i18n("Show legend")
+            }
+            QQC2.CheckBox {
+                id: forceCompact
+                text: i18n("Force compact mode")
+            }
+            QQC2.CheckBox {
+                id: roundedValue
+                text: i18n("Rounded value")
+            }
+            QQC2.CheckBox {
+                id: rangeAutoCheckbox
+                text: i18n("Auto data range")
+            }
             
-        }
-
-        GridLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter    
-
-            QQC2.Label {
-                color: Kirigami.Theme.textColor
-                text: i18n("Start from Angle")  
+            Faces.SensorRangeSpinBox {
+                id: rangeFromSpin
+                Kirigami.FormData.label: i18n("Min :")
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+                enabled: !rangeAutoCheckbox.checked
+                sensors: controller.highPrioritySensorIds
             }
-
-            QQC2.SpinBox {
-                id: fromAngleSpin
-                from: -180
-                to: 360
-                editable: true
-                textFromValue: function(value, locale) {
-                    return i18nc("angle degrees", "%1°", value);
-                }
-                valueFromText: function(text, locale) {
-                    return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
-                }
-            }
-        }
-        
-        GridLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter    
-            QQC2.Label {
-                id: test
-                color: Kirigami.Theme.textColor
-                text: i18n("Total Pie Angle")               
-            }
-            QQC2.SpinBox {
-                id: toAngleSpin
-                from: 0
-                to: 360
-                editable: true
-                textFromValue: function(value, locale) {
-                    return i18nc("angle", "%1°", value);
-                }
-                valueFromText: function(text, locale) {
-                    return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
-                }
+            Faces.SensorRangeSpinBox {
+                id: rangeToSpin
+                Kirigami.FormData.label: i18n("Max :")
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+                enabled: !rangeAutoCheckbox.checked
+                sensors: controller.highPrioritySensorIds
             }
         }
 
-        QQC2.CheckBox {
-            id: smoothEndsCheckbox
-            text: i18n("Rounded Lines")
-            Layout.fillWidth: true
-            Layout.fillHeight: true
+        Column{
+            spacing: 5
+            Kirigami.Heading{
+                text: i18n("Modes")
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter 
+            }
+            Row{
+                QQC2.Label {
+                    color: Kirigami.Theme.textColor
+                    text: i18n("Temp mode")
+                    Layout.alignment: Qt.AlignLeft
+                }
+                QQC2.Switch{
+                    id: levelMode
+                }
+                QQC2.Label {
+                    color: Kirigami.Theme.textColor
+                    text: i18n("Level mode")
+                    
+                    Layout.alignment: Qt.AlignLeft
+                }
+            }
+            QQC2.CheckBox {
+                id: smoothEndsCheckbox
+                visible : levelMode.checked
+                text: i18n("Rounded Lines")
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+
+            GridLayout {
+                visible : levelMode.checked
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter    
+
+                QQC2.Label {
+                    color: Kirigami.Theme.textColor
+                    text: i18n("Start from Angle")  
+                }
+
+                QQC2.SpinBox {
+                    id: fromAngleSpin
+                    from: -180
+                    to: 360
+                    editable: true
+                    textFromValue: function(value, locale) {
+                        return i18nc("angle degrees", "%1°", value);
+                    }
+                    valueFromText: function(text, locale) {
+                        return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+                    }
+                }
+            }
+            
+            GridLayout {
+                visible : levelMode.checked
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter    
+                QQC2.Label {
+                    id: test
+                    color: Kirigami.Theme.textColor
+                    text: i18n("Total Pie Angle")               
+                }
+                QQC2.SpinBox {
+                    id: toAngleSpin
+                    from: 0
+                    to: 360
+                    editable: true
+                    textFromValue: function(value, locale) {
+                        return i18nc("angle", "%1°", value);
+                    }
+                    valueFromText: function(text, locale) {
+                        return Number.fromLocaleString(locale, text.replace(i18nc("angle degrees", "°"), ""));
+                    }
+                }
+            }         
         }
     }
 }

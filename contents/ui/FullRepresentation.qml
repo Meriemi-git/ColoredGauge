@@ -22,21 +22,44 @@ Representation {
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
             text: root.controller.title
-            visible: !root.forceCompact && root.showSensorTitle && text.length > 0 
+            visible: !root.levelMode && !root.forceCompact && root.showSensorTitle && text.length > 0 
             level: 2
             color : root.actualColor
         }
         BigTemp {
-            visible: !root.forceCompact
+            visible: !root.levelMode && !root.forceCompact
             actualColor : root.actualColor
             sensorValue : root.sensorValue
             mix : root.mix
         }
         LittleTemp {
-            visible : root.forceCompact
+            visible : !root.levelMode && root.forceCompact
             actualColor : root.actualColor
             sensorValue : root.sensorValue
             mix : root.mix
+        }
+        PieChart {
+            id: pieChart
+            visible : root.levelMode
+            Layout.maximumHeight: Math.max(root.width, Layout.minimumHeight)
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.alignment: Qt.AlignCenter
+            updateRateLimit: root.controller.updateRateLimit
+            actualColor: root.actualColor
+        }
+        Faces.ExtendedLegend {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.minimumHeight: root.formFactor === Faces.SensorFace.Horizontal
+                || root.formFactor === Faces.SensorFace.Vertical
+                ? implicitHeight
+                : Kirigami.Units.gridUnit
+            visible: root.showLegend
+            chart: pieChart.chart
+            sourceModel: root.showLegend ? pieChart.sensorsModel : null
+            sensorIds: root.showLegend ? root.controller.lowPrioritySensorIds : []
+            updateRateLimit: root.controller.updateRateLimit
         }
     }
 }   
