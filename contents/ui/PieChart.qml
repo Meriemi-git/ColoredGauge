@@ -19,8 +19,7 @@ import org.kde.quickcharts.controls 1.0 as ChartControls
 
 
 ChartControls.PieChartControl {
-    id: chart
-
+    id: pie
 
     property int updateRateLimit
     property color actualColor
@@ -43,8 +42,8 @@ ChartControls.PieChartControl {
     chart.toAngle: root.controller.faceConfiguration.toAngle
 
     range {
-        from: chart.rangeFrom
-        to: chart.rangeTo
+        from: pie.rangeFrom
+        to: pie.rangeTo
         automatic: root.controller.faceConfiguration.rangeAuto
     }
 
@@ -54,7 +53,7 @@ ChartControls.PieChartControl {
         model: Sensors.SensorDataModel {
             id: sensorsModel
             sensors: root.controller.highPrioritySensorIds
-            updateRateLimit: chart.updateRateLimit
+            updateRateLimit: pie.updateRateLimit
             sensorLabels: root.controller.sensorLabels
         }
         roleName: "Value"
@@ -75,14 +74,11 @@ ChartControls.PieChartControl {
         anchors.fill: parent
 
         usedSensor: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
-        totalSensor: root.controller.totalSensors.length > 1 ? root.controller.totalSensors[1] : ""
-
-        contentMargin: chart.chart.thickness
-        updateRateLimit: chart.updateRateLimit
-        actualColor : actualColor
+        contentMargin: pie.chart.thickness
+        updateRateLimit: pie.updateRateLimit
     }
-     chart.onDataChanged:{
-        chart.color = actualColor
+    chart.onDataChanged:{
+        pie.color = actualColor
     }
 }
 

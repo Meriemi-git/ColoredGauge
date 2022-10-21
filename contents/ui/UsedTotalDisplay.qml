@@ -21,7 +21,6 @@ Item {
     property alias totalSensor: totalSensorObject.sensorId
 
     property int updateRateLimit
-    property color actualColor
     property real contentMargin: 10
 
     ColumnLayout {
@@ -59,7 +58,7 @@ Item {
             layer.effect: Glow {
                 radius: 4
                 samples: 17
-                color: actualColor 
+                color: "black"
                 source: usedValue
                 spread: 0.5
             }
