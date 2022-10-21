@@ -21,12 +21,10 @@ import org.kde.quickcharts.controls 1.0 as ChartControls
 ChartControls.PieChartControl {
     id: chart
 
-    property alias headingSensor: sensor.sensorId
-    property alias sensors: sensorsModel.sensors
-    property alias sensorsModel: sensorsModel
 
     property int updateRateLimit
     property color actualColor
+    property double sensorValue
     Layout.minimumHeight: root.formFactor == Faces.SensorFace.Vertical ? width : Kirigami.Units.gridUnit
 
     leftPadding: 0
@@ -72,12 +70,6 @@ ChartControls.PieChartControl {
         model: valueSources[0].model;
         indexColumns: true
     }
-    // chart.colorSource: root.colorSource
-    Sensors.Sensor {
-        id: sensor
-        sensorId: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
-        updateRateLimit: chart.updateRateLimit
-    }
 
     UsedTotalDisplay {
         anchors.fill: parent
@@ -87,9 +79,10 @@ ChartControls.PieChartControl {
 
         contentMargin: chart.chart.thickness
         updateRateLimit: chart.updateRateLimit
+        actualColor : actualColor
     }
      chart.onDataChanged:{
         chart.color = actualColor
-     }
+    }
 }
 

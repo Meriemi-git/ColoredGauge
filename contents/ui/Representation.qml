@@ -63,6 +63,7 @@ Faces.SensorFace {
             roleName: "Value"
             indexColumns: true
         }
+        
         onDataChanged:{
             const sensorValue = sensor.value
             if(sensorValue != null && previousSensorValue != sensorValue){

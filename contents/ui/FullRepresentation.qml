@@ -47,6 +47,7 @@ Representation {
             Layout.alignment: Qt.AlignCenter
             updateRateLimit: root.controller.updateRateLimit
             actualColor: root.actualColor
+            sensorValue : root.sensorValue
         }
         Faces.ExtendedLegend {
             Layout.fillWidth: true

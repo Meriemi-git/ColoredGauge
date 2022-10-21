@@ -7,6 +7,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
+import QtGraphicalEffects 1.12
 
 import org.kde.kirigami 2.4 as Kirigami
 
@@ -20,7 +21,7 @@ Item {
     property alias totalSensor: totalSensorObject.sensorId
 
     property int updateRateLimit
-
+    property color actualColor
     property real contentMargin: 10
 
     ColumnLayout {
@@ -53,7 +54,15 @@ Item {
             horizontalAlignment: Text.AlignHCenter
 
             fontSizeMode: Text.HorizontalFit
-            minimumPointSize: 7
+            minimumPointSize: 12
+            layer.enabled: true
+            layer.effect: Glow {
+                radius: 4
+                samples: 17
+                color: actualColor 
+                source: usedValue
+                spread: 0.5
+            }
         }
 
         Kirigami.Separator {
