@@ -21,6 +21,10 @@ import org.kde.quickcharts.controls 1.0 as ChartControls
 ChartControls.PieChartControl {
     id: pie
 
+    property alias headingSensor: sensor.sensorId
+    property alias sensors: sensorsModel.sensors
+    property alias sensorsModel: sensorsModel
+
     property int updateRateLimit
     property color actualColor
     property double sensorValue
@@ -59,6 +63,17 @@ ChartControls.PieChartControl {
         roleName: "Value"
         indexColumns: true
     }
+
+    Sensors.SensorUnitModel {
+        id: unitModel
+        sensors: root.controller.highPrioritySensorIds
+        onReadyChanged: updateCurrentIndex()
+    }
+
+    function updateCurrentIndex(){
+        console.log("Unit", unitModel.data(unitModel.index(0, 0), Sensors.SensorUnitModel.UnitRole))
+    }
+
     chart.nameSource: Charts.ModelSource {
         roleName: "Name";
         model: valueSources[0].model;
@@ -70,13 +85,20 @@ ChartControls.PieChartControl {
         indexColumns: true
     }
 
+
+    Sensors.Sensor {
+        id: sensor
+        sensorId: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
+        updateRateLimit: chart.updateRateLimit
+    }
+
     UsedTotalDisplay {
         anchors.fill: parent
-
         usedSensor: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
         contentMargin: pie.chart.thickness
         updateRateLimit: pie.updateRateLimit
     }
+
     chart.onDataChanged:{
         pie.color = actualColor
     }

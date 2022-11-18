@@ -21,13 +21,22 @@ Item {
     property alias totalSensor: totalSensorObject.sensorId
 
     property int updateRateLimit
+    property string chartLabel
+    property Sensors.SensorUnitModel unitModel
     property real contentMargin: 10
+
+    unitModel : Sensors.SensorUnitModel {
+        id: unitModel
+        sensors: root.controller.highPrioritySensorIds
+        onReadyChanged: updateCurrentIndex()
+    }
+
 
     ColumnLayout {
         id: layout
 
         anchors.centerIn: parent
-        width: Math.min(parent.width, parent.height) * 0.75
+        width: Math.min(parent.width, parent.height) 
 
         spacing: 0
 
@@ -36,24 +45,30 @@ Item {
 
             Layout.fillWidth: true
 
-            text: chart.sensorsModel.sensorLabels[usedSensor] ||  (usedSensorObject.name + (usedSensorObject.shortName.length > 0 ? "\x9C" + usedSensorObject.shortName : ""))
+            text: (usedSensorObject.name + (usedSensorObject.shortName.length > 0 ? "\x9C" + usedSensorObject.shortName : ""))
             horizontalAlignment: Text.AlignHCenter
             font: Kirigami.Theme.smallFont
             color: Kirigami.Theme.disabledTextColor
             visible: totalValue.visible
             elide: Text.ElideRight
-
             opacity: layout.y > root.contentMargin ? 1 : 0
         }
 
         Label {
             id: usedValue
             Layout.fillWidth: true
-            text: usedSensorObject.formattedValue
+            text: switch(usedSensorObject.unit) {
+                case 100:
+                    return (usedSensorObject.value / (1024 * 1024 * 1024)).toFixed(1) + " G"
+                case 500:
+                default:
+                    console.log("Unit", unitModel.data(unitModel.index(1, 0), Sensors.SensorUnitModel.UnitRole))
+                    return usedSensorObject.formattedValue
+            }
             horizontalAlignment: Text.AlignHCenter
-
             fontSizeMode: Text.HorizontalFit
-            minimumPointSize: 12
+            minimumPointSize: 7
+            elide: Text.ElideRight
             layer.enabled: true
             layer.effect: Glow {
                 radius: 4
@@ -85,7 +100,7 @@ Item {
 
             Layout.fillWidth: true
 
-            text: chart.sensorsModel.sensorLabels[totalSensor] || (totalSensorObject.name + (totalSensorObject.shortName.length > 0 ? "\x9C" + totalSensorObject.shortName : ""))
+            text:(totalSensorObject.name + (totalSensorObject.shortName.length > 0 ? "\x9C" + totalSensorObject.shortName : ""))
             horizontalAlignment: Text.AlignHCenter
             font: Kirigami.Theme.smallFont
             color: Kirigami.Theme.disabledTextColor
