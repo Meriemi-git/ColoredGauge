@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "plasmaShellReplace",
+            "type": "shell",
+            "command": "rsync -r --exclude '.git' ../org.meriemi.coloredgauge /home/meriemi/.local/share/ksysguard/sensorfaces && plasmashell --replace"
+        },
+        {
+            "label": "plasmaShellStop",
+            "type": "shell",
+            "command": "kquitapp5 plasmashell"
+        }
+    ]
+}
