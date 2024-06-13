@@ -2,86 +2,99 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-import QtQuick 2.9 
-import QtQuick.Layouts 1.1 
-
-import org.kde.kirigami 2.8 as Kirigami
-
-import org.kde.ksysguard.sensors 1.0 as Sensors
-import org.kde.ksysguard.faces 1.0 as Faces
-
-import org.kde.quickcharts 1.0 as Charts
-import org.kde.quickcharts.controls 1.0 as ChartControls
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick 2.9
+import QtQuick.Layouts 1.1
+import org.kde.kirigami as Kirigami
+import org.kde.ksysguard.faces as Faces
+import org.kde.ksysguard.sensors as Sensors
+import org.kde.plasma.core as PlasmaCore
 
 Faces.SensorFace {
-    formFactor : FormFactor.Constrained
+    id: sensorFace
 
-    readonly property bool showLegend : controller.faceConfiguration.showLegend
-    readonly property bool showSensorTitle : controller.faceConfiguration.showSensorTitle
-    readonly property bool levelMode : controller.faceConfiguration.levelMode
-    readonly property bool colorizedSensorTitle : controller.faceConfiguration.colorizedSensorTitle
-    readonly property bool forceCompact: controller.faceConfiguration.forceCompact
-    readonly property real rangeFrom: root.controller.faceConfiguration.rangeFrom *
-                                        root.controller.faceConfiguration.rangeFromMultiplier
-    readonly property real rangeTo: root.controller.faceConfiguration.rangeTo *
-                                        root.controller.faceConfiguration.rangeToMultiplier
-    readonly property color coldColor: root.controller.faceConfiguration.coldColor  
-    readonly property color hotColor: root.controller.faceConfiguration.hotColor 
-
-    property alias headingSensor: sensor.sensorId
-    property alias sensors: sensorsModel.sensors
-    property alias sensorsModel: sensorsModel
-
-    property double previousSensorValue
-    property color actualColor : Qt.rgba(1,1,1,1)
-    property double sensorValue : 0.0
-    property double mix : 0.0 
+    readonly property bool showLegend: controller.faceConfiguration.showLegend
+    readonly property bool showTitle: controller.faceConfiguration.showTitle
+    readonly property bool showUnit: controller.faceConfiguration.showUnit
+    readonly property bool colorized: controller.faceConfiguration.colorized
+    readonly property bool textOnSide: controller.faceConfiguration.textOnSide
+    readonly property bool rangeAuto: controller.faceConfiguration.rangeAuto
+    readonly property bool showIcon: controller.faceConfiguration.showIcon
+    readonly property bool showValue: controller.faceConfiguration.showValue
+    readonly property real backgroundOpacity: controller.faceConfiguration.backgroundOpacity
+    readonly property real rangeFrom: controller.faceConfiguration.rangeFrom
+    readonly property real rangeTo: controller.faceConfiguration.rangeTo
+    readonly property real multiplier: controller.faceConfiguration.multiplier
+    readonly property int decimals: controller.faceConfiguration.decimals
+    readonly property int updateRateLimit: controller.updateRateLimit
+    readonly property int titleTopMargin: controller.faceConfiguration.titleTopMargin
+    readonly property int titleRightMargin: controller.faceConfiguration.titleRightMargin
+    readonly property int titleBottomMargin: controller.faceConfiguration.titleBottomMargin
+    readonly property int titleLeftMargin: controller.faceConfiguration.titleLeftMargin
+    readonly property int titleSize: controller.faceConfiguration.titleSize
+    readonly property int valueTopPadding: controller.faceConfiguration.valueTopPadding
+    readonly property int valueRightPadding: controller.faceConfiguration.valueRightPadding
+    readonly property int valueBottomPadding: controller.faceConfiguration.valueBottomPadding
+    readonly property int valueLeftPadding: controller.faceConfiguration.valueLeftPadding
+    readonly property int valueSize: controller.faceConfiguration.valueSize
+    readonly property int minimumWidgetWith: controller.faceConfiguration.minimumWidgetWith
+    readonly property string symbol: controller.faceConfiguration.symbol
+    readonly property string title: controller.title
+    readonly property color lowValueColor: controller.faceConfiguration.lowValueColor
+    readonly property color highValueColor: controller.faceConfiguration.highValueColor
+    readonly property color backgroundColor: controller.faceConfiguration.backgroundColor
+    readonly property var svgFrames: controller.faceConfiguration.svgFrames
+    property alias sensorDataModel: sensorDataModel
+    property alias unitModel: unitModel
+    property color actualColor: lowValueColor
+    property string actualFramePath
+    property string actualValue
+    property string actualSymbol
 
     ColorUtils.Gradien {
-        id : gradien
+        id: gradien
     }
 
-    Sensors.Sensor {
-        id: sensor
-        sensorId: root.controller.totalSensors.length > 0 ? root.controller.totalSensors[0] : ""
-        updateRateLimit: 1000
+    Sensors.SensorDataModel {
+        id: sensorDataModel
+
+        sensors: sensorFace.controller.highPrioritySensorIds
+        updateRateLimit: sensorFace.updateRateLimit
+        sensorLabels: sensorFace.controller.sensorLabels
     }
 
-    Charts.PieChart {
-        id: chart
-        visible: false
-        property alias sensors: sensorsModel.sensors
-        property alias sensorsModel: sensorsModel
-        valueSources: Charts.ModelSource {
-            model: Sensors.SensorDataModel {
-                id: sensorsModel
-                sensors: root.controller.highPrioritySensorIds
-                updateRateLimit: chart.updateRateLimit
-                sensorLabels: root.controller.sensorLabels
-            }
-            roleName: "Value"
-            indexColumns: true
+    Sensors.SensorUnitModel {
+        id: unitModel
+
+        sensors: controller.highPrioritySensorIds
+    }
+
+    SensorAnimator {
+        id: svgAnimator
+
+        name: "widget"
+        sensorDataModel: sensorFace.sensorDataModel
+        unitModel: sensorFace.unitModel
+        svgFrames: sensorFace.svgFrames
+        rangeAuto: sensorFace.rangeAuto
+        rangeFrom: sensorFace.rangeFrom
+        rangeTo: sensorFace.rangeTo
+        lowValueColor: sensorFace.lowValueColor
+        highValueColor: sensorFace.highValueColor
+        overridedSymbol: sensorFace.symbol
+        multiplier: sensorFace.multiplier
+        decimals: sensorFace.decimals
+        onSensorValueChanged: (sensorValue) => {
+            sensorFace.actualValue = sensorValue;
         }
-        
-        onDataChanged:{
-            const sensorValue = sensor.value
-            if(sensorValue != null && previousSensorValue != sensorValue){
-                if(sensorValue > root.rangeFrom && sensorValue < root.rangeTo){
-                    var mix = (sensorValue- root.rangeFrom) / (root.rangeTo - root.rangeFrom)
-                }else if(sensorValue >= root.rangeTo){
-                    // Temp overshoot max
-                    mix = 1
-                }else if(sensorValue <= root.rangeFrom){
-                    // Temp is lower than min
-                    mix = 0
-                }  
-                var newColor = gradien.generateGradient(root.coldColor,root.hotColor,mix)
-                root.actualColor = newColor
-                root.sensorValue = sensorValue
-                root.mix = mix
-                previousSensorValue = sensorValue
-            }
-        }           
+        onSymbolChanged: (symbol) => {
+            sensorFace.actualSymbol = symbol;
+        }
+        onActualFramePathChanged: (actualFramePath) => {
+            sensorFace.actualFramePath = actualFramePath;
+        }
+        onActualColorChanged: (actualColor) => {
+            sensorFace.actualColor = actualColor;
+        }
     }
+
 }

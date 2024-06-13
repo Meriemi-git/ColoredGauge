@@ -1,18 +1,18 @@
-import QtQuick 2.15
+import QtQuick 6.6
 
 Item {
     component Gradien: Item {
         /**
         ** Generate gradient with better colors than simple linear interpolation
-        ** @see https://stackoverflow.com/questions/22607043/color-gradient-algorithm
+        ** @see https://stackoverflow.com/questions/22607043/_color-gradient-algorithm
         ** Mark Ransom response : 
-        ** The intensity of the gradient must be constant in a perceptual color space 
+        ** The intensity of the gradient must be constant in a perceptual _color space 
         ** or it will look unnaturally dark or light at points in the gradient. 
         ** You can see this easily in a gradient based on simple interpolation of the sRGB values, 
         ** particularly the red-green gradient is too dark in the middle. Using interpolation on linear values 
         ** rather than gamma-corrected values makes the red-green gradient better, but at the expense of the back-white gradient. 
-        ** By separating the light intensities from the color you can get the best of both worlds.
-        ** Often when a perceptual color space is required, the Lab color space will be proposed. 
+        ** By separating the light intensities from the _color you can get the best of both worlds.
+        ** Often when a perceptual _color space is required, the Lab _color space will be proposed. 
         ** I think sometimes it goes too far, because it tries to accommodate the perception that blue 
         ** is darker than an equivalent intensity of other colors such as yellow. This is true, but we are used to seeing this effect in our natural environment and in a gradient you end up with an overcompensation.
         ** A power-law function of 0.43 was experimentally determined by researchers to be the best fit for relating gray light intensity to perceived brightness.
@@ -51,27 +51,27 @@ Item {
             return newColor
         }
         /**
-            ** Convert color from 0..255 to 0..1
+            ** Convert _color from 0..255 to 0..1
             **/
-        function normalize(color){
+        function normalize(_color){
             return {
-                r : color.r / 255,
-                g : color.g / 255,
-                b : color.b / 255,
+                r : _color.r / 255,
+                g : _color.g / 255,
+                b : _color.b / 255,
             }
         }
         /**
             ** Apply sRGB companding to convert each channel into linear light
             **/
-        function srgbCompanding(color){
+        function srgbCompanding(_color){
             var newR = 0
             var newG = 0
             var newB = 0
 
             // Apply companding to Red, Green, and Blue
-            if (color.r > 0.0031308) {newR = 1.055*Math.pow(color.r, 1/2.4)-0.055} else {newR = color.r * 12.92;}
-            if (color.g > 0.0031308) {newG = 1.055*Math.pow(color.g, 1/2.4)-0.055} else {newG = color.g * 12.92;}
-            if (color.b > 0.0031308) {newB = 1.055*Math.pow(color.b, 1/2.4)-0.055} else {newB = color.b * 12.92;}
+            if (_color.r > 0.0031308) {newR = 1.055*Math.pow(_color.r, 1/2.4)-0.055} else {newR = _color.r * 12.92;}
+            if (_color.g > 0.0031308) {newG = 1.055*Math.pow(_color.g, 1/2.4)-0.055} else {newG = _color.g * 12.92;}
+            if (_color.b > 0.0031308) {newB = 1.055*Math.pow(_color.b, 1/2.4)-0.055} else {newB = _color.b * 12.92;}
             return {
                 r : newR,
                 g : newG,
@@ -81,26 +81,26 @@ Item {
         /**
             ** Apply inverse sRGB companding to convert each channel into linear light
             **/
-        function inverseSrgbCompanding(color){
+        function inverseSrgbCompanding(_color){
             var newR = 0.0
             var newG = 0.0
             var newB = 0.0
             // Apply companding to Red, Green, and Blue
-            if (color.r > 0.04045) {
-                newR = Math.pow((color.r+0.055)/1.055, 2.4)
+            if (_color.r > 0.04045) {
+                newR = Math.pow((_color.r+0.055)/1.055, 2.4)
             } else {
-                newR = color.r / 12.92;
+                newR = _color.r / 12.92;
             }
-            if (color.g > 0.04045) {
-                newG = Math.pow((color.g+0.055)/1.055, 2.4)
+            if (_color.g > 0.04045) {
+                newG = Math.pow((_color.g+0.055)/1.055, 2.4)
 
             } else {
-                newG = color.g / 12.92;
+                newG = _color.g / 12.92;
             }
-            if (color.b > 0.04045) {
-                newB = Math.pow((color.b+0.055)/1.055, 2.4)
+            if (_color.b > 0.04045) {
+                newB = Math.pow((_color.b+0.055)/1.055, 2.4)
             } else {
-                newB = color.b / 12.92;
+                newB = _color.b / 12.92;
             }
             
             return {

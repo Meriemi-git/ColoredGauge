@@ -1,23 +1,23 @@
 {
-    "KPlugin": {
-        "Authors": [
-            {
-                "Email": "meriemi@protonmail.com",
-                "Name": "Rémi Plantade"
-            }
-        ],
-        "Category": "Utilities",
-        "Description": "Colored Gauge for sensor monitoring",
-        "EnabledByDefault": true,
-        "Icon": "adjustrgb",
-        "Id": "org.meriemi.coloredgauge",
-        "License": "LGPLv2+",
-        "Name": "Colorfull Sensor",
-        "ServiceTypes": [
-            "KSysguard/SensorFace"
-        ],
-        "Version": "0.1",
-        "Website": "https://plasma.kde.org/"
-    },
-    "X-KDE-ParentApp": "org.kde.plasmashell"
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "meriemi@protonmail.com",
+        "Name": "Rémi Plantade"
+      }
+    ],
+    "Category": "Utilities",
+    "Description": "Colored Gauge for sensor monitoring",
+    "EnabledByDefault": true,
+    "Icon": "adjustrgb",
+    "Id": "org.meriemi.coloredgauge",
+    "License": "LGPLv2+",
+    "Name": "Colorfull Sensor",
+    "ServiceTypes": ["KSysguard/SensorFace"],
+    "Version": "1.0",
+    "Website": "https://git.lhnlm.fr/Doremus/org-meriemi-coloredgauge"
+  },
+  "X-KDE-ParentApp": "org.kde.plasmashell",
+  "KPackageStructure": "KSysguard/SensorFace",
+  "X-Plasma-API-Minimum-Version": "6.0"
 }

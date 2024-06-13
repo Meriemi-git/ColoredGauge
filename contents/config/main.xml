@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
-      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
-  <kcfgfile name=""/>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+    <kcfgfile name=""/>
 
     <group name="General">
         <entry name="fromAngle" type="Int">
@@ -12,59 +11,97 @@
         <entry name="toAngle" type="Int">
             <default>180</default>
         </entry>
-        <entry name="coldColor" type="color">
+        <entry name="lowValueColor" type="color">
             <default>#00ff00</default>
         </entry>
-         <entry name="hotColor" type="color">
+        <entry name="highValueColor" type="color">
             <default>#ff0004</default>
-        </entry>
-        <entry name="smoothEnds" type="Bool">
-            <default>true</default>
         </entry>
         <entry name="showLegend" type="Bool">
             <default>true</default>
         </entry>
-        <entry name="showText" type="Bool">
+        <entry name="showValue" type="Bool">
             <default>true</default>
         </entry>
         <entry name="showIcon" type="Bool">
             <default>true</default>
         </entry>
-        <entry name="roundedValue" type="Bool">
+        <entry name="showTitle" type="Bool">
             <default>true</default>
         </entry>
-        <entry name="colorizedSensorTitle" type="Bool">
+        <entry name="showUnit" type="Bool">
             <default>true</default>
         </entry>
-        <entry name="showSensorTitle" type="Bool">
-            <default>true</default>
+        <entry name="backgroundOpacity" type="Double">
+            <default>0.0</default>
         </entry>
-        <entry name="levelMode" type="Bool">
-            <default>true</default>
+        <entry name="backgroundColor" type="color">
+            <default>#000000</default>
         </entry>
-        <entry name="forceCompact" type="Bool">
-            <default>false</default>
+        <entry name="decimals" type="Int">
+            <default>2</default>
+        </entry>
+        <entry name="colorized" type="Bool">
+            <default>true</default>
         </entry>
         <entry name="rangeFrom" type="Double">
             <default>0</default>
         </entry>
-        <entry name="rangeFromUnit" type="Int">
-            <default>-1</default>
-        </entry>
-        <entry name="rangeFromMultiplier" type="Double">
-            <default>1.0</default>
-        </entry>
         <entry name="rangeTo" type="Double">
             <default>100</default>
-        </entry>
-        <entry name="rangeToUnit" type="Int">
-            <default>-1</default>
-        </entry>
-        <entry name="rangeToMultiplier" type="Double">
-            <default>1.0</default>
         </entry>
         <entry name="rangeAuto" type="Bool">
             <default>true</default>
         </entry>
-    </group> 
+        <entry name="symbol" type="String">
+            <default>?</default>
+        </entry>
+        <entry name="multiplier" type="Double">
+            <default>1.0</default>
+        </entry>
+        <entry name="unitAuto" type="Bool">
+            <default>true</default>
+        </entry>
+        <entry name="textOnSide" type="Bool">
+            <default>false</default>
+        </entry>
+        <entry name="svgFrames" type="StringList">
+        </entry>
+        <entry name="iconIndex" type="Int">
+        <default>-1</default>
+        </entry>
+        <entry name="titleTopMargin" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="titleRightMargin" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="titleLeftMargin" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="titleBottomMargin" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="titleSize" type="Int">
+            <default>15</default>
+        </entry>
+        <entry name="valueTopPadding" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="valueRightPadding" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="valueLeftPadding" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="valueBottomPadding" type="Int">
+            <default>0</default>
+        </entry>
+        <entry name="valueSize" type="Int">
+            <default>15</default>
+        </entry>
+        <entry name="minimumWidgetWith" type="Int">
+            <default>0</default>
+        </entry>
+    </group>
 </kcfg>
